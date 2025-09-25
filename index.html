@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogos para 2 Jogadores</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        /* Reset e variáveis CSS */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f43f5e;
+            --secondary-dark: #e11d48;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --radius-lg: 20px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            padding: 24px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        /* Header moderno */
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Menu principal moderno */
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .menu-btn {
+            padding: 28px 24px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        .menu-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .menu-btn:hover::before {
+            height: 6px;
+        }
+        
+        .menu-btn span {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        
+        /* Seções do jogo */
+        .game-section {
+            display: none;
+            flex-direction: column;
+            gap: 24px;
+            background: var(--card-bg);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+        }
+        
+        .active {
+            display: flex;
+        }
+        
+        .section-header {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-header span {
+            font-size: 1.5rem;
+        }
+        
+        /* Botões modernos */
+        .btn {
+            padding: 16px 28px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--background);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--card-bg);
+            border-color: var(--primary);
+        }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(244, 63, 94, 0.4);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        /* Jogo da Velha moderno */
+        .tic-tac-toe-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 12px;
+            margin: 0 auto;
+            max-width: 400px;
+            aspect-ratio: 1/1;
+        }
+        
+        .cell {
+            background: var(--background);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .cell:hover:not(.x):not(.o) {
+            background: var(--card-bg);
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+        
+        .cell.x {
+            color: var(--secondary);
+            text-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);
+        }
+        
+        .cell.o {
+            color: var(--primary);
+            text-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Animação para células */
+        @keyframes pop-in {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .cell.x, .cell.o {
+            animation: pop-in 0.2s ease-out;
+        }
+        
+        .status {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin: 24px 0;
+            min-height: 2.5rem;
+            padding: 16px;
+            background: var(--background);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+        }
+        
+        /* Corrida de Toques moderno */
+        .tap-race-container {
+            display: flex;
+            height: 50vh;
+            margin-bottom: 24px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .tap-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tap-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.1) 0%, transparent 100%);
+        }
+        
+        .player1-area {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        }
+        
+        .player2-area {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+        
+        .tap-area:active {
+            transform: scale(0.98);
+        }
+        
+        .timer-container {
+            text-align: center;
+            margin: 24px 0;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .timer {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+        
+        .timer-label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* Duelo de Reflexo moderno */
+        .reflex-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .reflex-game::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+        }
+        
+        .reflex-display {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 32px;
+            min-height: 4rem;
+            padding: 20px 40px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .reflex-ready {
+            color: var(--warning);
+            border-left: 4px solid var(--warning);
+        }
+        
+        .reflex-go {
+            color: var(--success);
+            border-left: 4px solid var(--success);
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .reflex-controls {
+            display: flex;
+            gap: 24px;
+            z-index: 2;
+        }
+        
+        .reflex-btn {
+            padding: 24px 48px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow);
+            min-width: 160px;
+        }
+        
+        .player1-btn {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: white;
+        }
+        
+        .player2-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .reflex-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .reflex-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .reflex-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .results {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 1.2rem;
+            padding: 16px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+        }
+        
+        /* Placar moderno */
+        .score-board {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: var(--radius);
+            margin-top: 24px;
+            box-shadow: var(--shadow);
+        }
+        
+        .score-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .score-title::before {
+            content: '📊';
+            font-size: 1.2rem;
+        }
+        
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--background);
+            border-radius: var(--radius);
+            font-weight: 500;
+        }
+        
+        .score-value {
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+        }
+        
+        /* Animação de transição entre jogos */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .game-section.active {
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            header {
+                padding: 24px 16px;
+                margin-bottom: 24px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .menu {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .menu-btn {
+                padding: 20px;
+                min-height: 100px;
+            }
+            
+            .game-section {
+                padding: 24px 16px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .reflex-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .reflex-btn {
+                width: 100%;
+            }
+            
+            .tic-tac-toe-board {
+                max-width: 300px;
+            }
+            
+            .cell {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: #0f172a;
+                --card-bg: #1e293b;
+                --text-primary: #f1f5f9;
+                --text-secondary: #94a3b8;
+                --border: #334155;
+            }
+            
+            body {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jogos para 2 Jogadores</h1>
+            <p>Escolha um jogo para começar a diversão!</p>
+        </header>
+        
+        <div class="menu">
+            <button class="menu-btn" data-game="tic-tac-toe">
+                <span>⭕</span>
+                Jogo da Velha
+            </button>
+            <button class="menu-btn" data-game="tap-race">
+                <span>👆</span>
+                Corrida de Toques
+            </button>
+            <button class="menu-btn" data-game="reflex-duel">
+                <span>⚡</span>
+                Duelo de Reflexo
+            </button>
+        </div>
+        
+        <!-- Jogo da Velha -->
+        <section id="tic-tac-toe" class="game-section">
+            <div class="section-header">
+                <span>⭕</span>
+                Jogo da Velha
+            </div>
+            
+            <div class="tic-tac-toe-board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+            
+            <div class="status" id="tic-tac-toe-status">Vez do Jogador X</div>
+            
+            <div class="btn-group">
+                <button class="btn btn-primary" id="reset-tic-tac-toe">🔄 Reiniciar Jogo</button>
+                <button class="btn btn-secondary back-btn">◀️ Voltar ao Menu</button>
+            </div>
+            
+            <div class="score-board">
+                <div class="score-title">Placar</div>
+                <div class="score-grid">
+                    <div class="score-item">
+                        <span>Jogador X:</span>
+                        <span class="score-value" id="score-x">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span>Jogador O:</span>
+                        <span class="score-value" id="score-o">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span>Empates:</span>
+                        <span class="score-value" id="score-draw">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Corrida de Toques -->
+        <section id="tap-race" class="game-section">
+            <div class="section-header">
+                <span>👆</span>
+                Corrida de Toques
+            </div>
+            
+            <div class="timer-container">
+                <div class="timer" id="tap-timer">10</div>
+                <div class="timer-label">segundos restantes</div>
+            </div>
+            
+            <div class="tap-race-container">
+                <div class="tap-area player1-area">
+                    <span id="player1-score">0</span>
+                </div>
+                <div class="tap-area player2-area">
+                    <span id="player2-score">0</span>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-accent" id="start-tap-race">🎯 Iniciar Corrida</button>
+                <button class="btn btn-secondary back-btn">◀️ Voltar ao Menu</button>
+            </div>
+            
+            <div class="score-board">
+                <div class="score-title">Placar</div>
+                <div class="score-grid">
+                    <div class="score-item">
+                        <span>Jogador 1:</span>
+                        <span class="score-value" id="tap-score-1">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span>Jogador 2:</span>
+                        <span class="score-value" id="tap-score-2">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Duelo de Reflexo -->
+        <section id="reflex-duel" class="game-section">
+            <div class="section-header">
+                <span>⚡</span>
+                Duelo de Reflexo
+            </div>
+            
+            <div class="reflex-game">
+                <div class="reflex-display reflex-ready" id="reflex-text">Preparar...</div>
+                
+                <div class="reflex-controls">
+                    <button class="reflex-btn player1-btn" id="player1-btn">Jogador 1</button>
+                    <button class="reflex-btn player2-btn" id="player2-btn">Jogador 2</button>
+                </div>
+            </div>
+            
+            <div class="results" id="reflex-results"></div>
+            
+            <div class="btn-group">
+                <button class="btn btn-accent" id="start-reflex">⚡ Iniciar Duelo</button>
+                <button class="btn btn-secondary back-btn">◀️ Voltar ao Menu</button>
+            </div>
+            
+            <div class="score-board">
+                <div class="score-title">Placar</div>
+                <div class="score-grid">
+                    <div class="score-item">
+                        <span>Jogador 1:</span>
+                        <span class="score-value" id="reflex-score-1">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span>Jogador 2:</span>
+                        <span class="score-value" id="reflex-score-2">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Gerenciamento de estado e navegação
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos do menu
+            const menuButtons = document.querySelectorAll('.menu-btn');
+            const gameSections = document.querySelectorAll('.game-section');
+            const backButtons = document.querySelectorAll('.back-btn');
+            
+            // Mostrar seção do jogo baseado no data-game do botão
+            menuButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const gameId = this.getAttribute('data-game');
+                    showGameSection(gameId);
+                });
+            });
+            
+            // Voltar ao menu principal
+            backButtons.forEach(button => {
+                button.addEventListener('click', showMainMenu);
+            });
+            
+            // Função para mostrar uma seção específica do jogo
+            function showGameSection(gameId) {
+                // Esconder todas as seções
+                gameSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Mostrar a seção solicitada
+                document.getElementById(gameId).classList.add('active');
+                
+                // Inicializar o jogo se necessário
+                if (gameId === 'tic-tac-toe') {
+                    initTicTacToe();
+                } else if (gameId === 'tap-race') {
+                    initTapRace();
+                } else if (gameId === 'reflex-duel') {
+                    initReflexDuel();
+                }
+            }
+            
+            // Função para mostrar o menu principal
+            function showMainMenu() {
+                gameSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+            }
+            
+            // Carregar pontuações do localStorage
+            loadScores();
+            
+            // Inicializar jogos
+            initTicTacToe();
+            initTapRace();
+            initReflexDuel();
+        });
+        
+        // Jogo da Velha
+        function initTicTacToe() {
+            const cells = document.querySelectorAll('.tic-tac-toe-board .cell');
+            const statusDisplay = document.getElementById('tic-tac-toe-status');
+            const resetButton = document.getElementById('reset-tic-tac-toe');
+            
+            // Estado do jogo
+            let gameActive = true;
+            let currentPlayer = 'X';
+            let gameState = ['', '', '', '', '', '', '', '', ''];
+            
+            // Mensagens do jogo
+            const winningMessage = () => `🎉 Jogador ${currentPlayer} venceu!`;
+            const drawMessage = () => `🤝 Empate!`;
+            const currentPlayerTurn = () => `Vez do Jogador ${currentPlayer}`;
+            
+            // Condições de vitória
+            const winningConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // linhas
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // colunas
+                [0, 4, 8], [2, 4, 6]             // diagonais
+            ];
+            
+            // Atualizar status
+            statusDisplay.innerHTML = currentPlayerTurn();
+            
+            // Manipuladores de eventos
+            cells.forEach(cell => {
+                cell.addEventListener('click', handleCellClick);
+            });
+            
+            resetButton.addEventListener('click', restartGame);
+            
+            function handleCellClick(clickedCellEvent) {
+                const clickedCell = clickedCellEvent.target;
+                const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+                
+                // Verificar se a célula já foi clicada ou se o jogo não está ativo
+                if (gameState[clickedCellIndex] !== '' || !gameActive) {
+                    return;
+                }
+                
+                // Processar o clique da célula
+                handleCellPlayed(clickedCell, clickedCellIndex);
+                handleResultValidation();
+            }
+            
+            function handleCellPlayed(clickedCell, clickedCellIndex) {
+                // Atualizar estado interno do jogo e interface
+                gameState[clickedCellIndex] = currentPlayer;
+                clickedCell.innerHTML = currentPlayer;
+                clickedCell.classList.add(currentPlayer.toLowerCase());
+            }
+            
+            function handleResultValidation() {
+                let roundWon = false;
+                
+                // Verificar condições de vitória
+                for (let i = 0; i < winningConditions.length; i++) {
+                    const [a, b, c] = winningConditions[i];
+                    if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+                        roundWon = true;
+                        break;
+                    }
+                }
+                
+                if (roundWon) {
+                    // Jogador venceu
+                    statusDisplay.innerHTML = winningMessage();
+                    gameActive = false;
+                    updateScore(currentPlayer);
+                    return;
+                }
+                
+                // Verificar empate
+                let roundDraw = !gameState.includes('');
+                if (roundDraw) {
+                    statusDisplay.innerHTML = drawMessage();
+                    gameActive = false;
+                    updateScore('draw');
+                    return;
+                }
+                
+                // Mudar jogador
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                statusDisplay.innerHTML = currentPlayerTurn();
+            }
+            
+            function restartGame() {
+                gameActive = true;
+                currentPlayer = 'X';
+                gameState = ['', '', '', '', '', '', '', '', ''];
+                statusDisplay.innerHTML = currentPlayerTurn();
+                
+                cells.forEach(cell => {
+                    cell.innerHTML = '';
+                    cell.classList.remove('x', 'o');
+                });
+            }
+            
+            function updateScore(winner) {
+                // Atualizar placar no localStorage e na UI
+                let scores = JSON.parse(localStorage.getItem('ticTacToeScores')) || { x: 0, o: 0, draw: 0 };
+                
+                if (winner === 'X') {
+                    scores.x += 1;
+                } else if (winner === 'O') {
+                    scores.o += 1;
+                } else {
+                    scores.draw += 1;
+                }
+                
+                localStorage.setItem('ticTacToeScores', JSON.stringify(scores));
+                updateScoreDisplay();
+            }
+            
+            function updateScoreDisplay() {
+                const scores = JSON.parse(localStorage.getItem('ticTacToeScores')) || { x: 0, o: 0, draw: 0 };
+                document.getElementById('score-x').textContent = scores.x;
+                document.getElementById('score-o').textContent = scores.o;
+                document.getElementById('score-draw').textContent = scores.draw;
+            }
+            
+            // Inicializar exibição de pontuação
+            updateScoreDisplay();
+        }
+        
+        // Corrida de Toques
+        function initTapRace() {
+            const player1Area = document.querySelector('.player1-area');
+            const player2Area = document.querySelector('.player2-area');
+            const player1Score = document.getElementById('player1-score');
+            const player2Score = document.getElementById('player2-score');
+            const tapTimer = document.getElementById('tap-timer');
+            const startButton = document.getElementById('start-tap-race');
+            
+            let gameActive = false;
+            let timeLeft = 10;
+            let timerInterval;
+            let p1Count = 0;
+            let p2Count = 0;
+            
+            // Carregar pontuações
+            updateTapScoreDisplay();
+            
+            // Manipuladores de eventos
+            player1Area.addEventListener('click', () => {
+                if (gameActive) {
+                    p1Count++;
+                    player1Score.textContent = p1Count;
+                    // Efeito visual de toque
+                    player1Area.style.transform = 'scale(0.98)';
+                    setTimeout(() => { player1Area.style.transform = ''; }, 100);
+                }
+            });
+            
+            player2Area.addEventListener('click', () => {
+                if (gameActive) {
+                    p2Count++;
+                    player2Score.textContent = p2Count;
+                    // Efeito visual de toque
+                    player2Area.style.transform = 'scale(0.98)';
+                    setTimeout(() => { player2Area.style.transform = ''; }, 100);
+                }
+            });
+            
+            startButton.addEventListener('click', startGame);
+            
+            function startGame() {
+                if (gameActive) return;
+                
+                // Reiniciar contagens
+                p1Count = 0;
+                p2Count = 0;
+                player1Score.textContent = '0';
+                player2Score.textContent = '0';
+                
+                // Iniciar contagem regressiva
+                timeLeft = 10;
+                tapTimer.textContent = timeLeft;
+                tapTimer.style.color = 'var(--primary-dark)';
+                gameActive = true;
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    tapTimer.textContent = timeLeft;
+                    
+                    // Mudar cor quando o tempo estiver acabando
+                    if (timeLeft <= 3) {
+                        tapTimer.style.color = 'var(--secondary)';
+                    }
+                    
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+            }
+            
+            function endGame() {
+                clearInterval(timerInterval);
+                gameActive = false;
+                
+                // Determinar vencedor
+                let winner = '';
+                if (p1Count > p2Count) {
+                    winner = 'Jogador 1';
+                } else if (p2Count > p1Count) {
+                    winner = 'Jogador 2';
+                } else {
+                    winner = 'Empate';
+                }
+                
+                // Atualizar placar
+                updateTapScores(p1Count, p2Count);
+                
+                // Mostrar resultado com estilo moderno
+                const resultMessage = `🎉 Fim de jogo! ${winner} venceu!\nJogador 1: ${p1Count}\nJogador 2: ${p2Count}`;
+                
+                // Criar modal de resultado
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0; left: 0;
+                    width: 100%; height: 100%;
+                    background: rgba(0,0,0,0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                `;
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.cssText = `
+                    background: var(--card-bg);
+                    padding: 32px;
+                    border-radius: var(--radius-lg);
+                    text-align: center;
+                    max-width: 90%;
+                    box-shadow: var(--shadow-lg);
+                `;
+                
+                modalContent.innerHTML = `
+                    <h3 style="margin-bottom: 20px; color: var(--primary-dark); font-size: 1.5rem;">🎉 Resultado Final</h3>
+                    <p style="margin-bottom: 16px; font-size: 1.2rem;">${winner} venceu!</p>
+                    <div style="display: flex; justify-content: center; gap: 40px; margin: 20px 0;">
+                        <div>
+                            <div style="font-size: 2rem; color: var(--secondary);">${p1Count}</div>
+                            <div>Jogador 1</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; color: var(--primary);">${p2Count}</div>
+                            <div>Jogador 2</div>
+                        </div>
+                    </div>
+                    <button style="padding: 12px 24px; background: var(--primary); color: white; border: none; border-radius: var(--radius); cursor: pointer; margin-top: 16px;">Fechar</button>
+                `;
+                
+                modalContent.querySelector('button').addEventListener('click', () => {
+                    document.body.removeChild(modal);
+                });
+                
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+            }
+            
+            function updateTapScores(p1, p2) {
+                let scores = JSON.parse(localStorage.getItem('tapRaceScores')) || { p1: 0, p2: 0 };
+                
+                if (p1 > p2) {
+                    scores.p1 += 1;
+                } else if (p2 > p1) {
+                    scores.p2 += 1;
+                }
+                
+                localStorage.setItem('tapRaceScores', JSON.stringify(scores));
+                updateTapScoreDisplay();
+            }
+            
+            function updateTapScoreDisplay() {
+                const scores = JSON.parse(localStorage.getItem('tapRaceScores')) || { p1: 0, p2: 0 };
+                document.getElementById('tap-score-1').textContent = scores.p1;
+                document.getElementById('tap-score-2').textContent = scores.p2;
+            }
+        }
+        
+        // Duelo de Reflexo
+        function initReflexDuel() {
+            const reflexText = document.getElementById('reflex-text');
+            const player1Btn = document.getElementById('player1-btn');
+            const player2Btn = document.getElementById('player2-btn');
+            const startButton = document.getElementById('start-reflex');
+            const resultsDisplay = document.getElementById('reflex-results');
+            
+            let gameActive = false;
+            let startTime;
+            let timeoutId;
+            let reactionTimeout;
+            
+            // Carregar pontuações
+            updateReflexScoreDisplay();
+            
+            // Manipuladores de eventos
+            startButton.addEventListener('click', startDuel);
+            player1Btn.addEventListener('click', () => handlePlayerClick('Jogador 1'));
+            player2Btn.addEventListener('click', () => handlePlayerClick('Jogador 2'));
+            
+            function startDuel() {
+                if (gameActive) return;
+                
+                // Reiniciar estado
+                gameActive = true;
+                resultsDisplay.textContent = '';
+                reflexText.textContent = 'Preparar...';
+                reflexText.className = 'reflex-display reflex-ready';
+                
+                // Desabilitar botões temporariamente
+                player1Btn.disabled = true;
+                player2Btn.disabled = true;
+                
+                // Tempo aleatório entre 2 e 5 segundos
+                const randomTime = Math.floor(Math.random() * 3000) + 2000;
+                
+                timeoutId = setTimeout(() => {
+                    reflexText.textContent = 'TOQUE!';
+                    reflexText.className = 'reflex-display reflex-go';
+                    startTime = Date.now();
+                    
+                    // Habilitar botões para resposta
+                    player1Btn.disabled = false;
+                    player2Btn.disabled = false;
+                    
+                    // Timeout para caso ninguém responda
+                    reactionTimeout = setTimeout(() => {
+                        if (gameActive) {
+                            endDuel(null);
+                        }
+                    }, 3000);
+                }, randomTime);
+            }
+            
+            function handlePlayerClick(player) {
+                if (!gameActive || !startTime) return;
+                
+                const reactionTime = Date.now() - startTime;
+                endDuel(player, reactionTime);
+            }
+            
+            function endDuel(winner, reactionTime = null) {
+                clearTimeout(timeoutId);
+                clearTimeout(reactionTimeout);
+                
+                gameActive = false;
+                player1Btn.disabled = false;
+                player2Btn.disabled = false;
+                
+                if (winner) {
+                    // Temos um vencedor
+                    resultsDisplay.textContent = `⚡ ${winner} venceu! Tempo de reação: ${reactionTime}ms`;
+                    updateReflexScores(winner);
+                    
+                    // Efeito visual para o vencedor
+                    const winnerBtn = winner === 'Jogador 1' ? player1Btn : player2Btn;
+                    winnerBtn.style.transform = 'scale(1.1)';
+                    setTimeout(() => { winnerBtn.style.transform = ''; }, 300);
+                } else {
+                    // Ninguém respondeu a tempo
+                    resultsDisplay.textContent = '⏰ Ninguém respondeu a tempo!';
+                }
+            }
+            
+            function updateReflexScores(winner) {
+                let scores = JSON.parse(localStorage.getItem('reflexScores')) || { p1: 0, p2: 0 };
+                
+                if (winner === 'Jogador 1') {
+                    scores.p1 += 1;
+                } else {
+                    scores.p2 += 1;
+                }
+                
+                localStorage.setItem('reflexScores', JSON.stringify(scores));
+                updateReflexScoreDisplay();
+            }
+            
+            function updateReflexScoreDisplay() {
+                const scores = JSON.parse(localStorage.getItem('reflexScores')) || { p1: 0, p2: 0 };
+                document.getElementById('reflex-score-1').textContent = scores.p1;
+                document.getElementById('reflex-score-2').textContent = scores.p2;
+            }
+        }
+        
+        // Função para carregar todas as pontuações do localStorage
+        function loadScores() {
+            // Inicializar pontuações se não existirem
+            if (!localStorage.getItem('ticTacToeScores')) {
+                localStorage.setItem('ticTacToeScores', JSON.stringify({ x: 0, o: 0, draw: 0 }));
+            }
+            
+            if (!localStorage.getItem('tapRaceScores')) {
+                localStorage.setItem('tapRaceScores', JSON.stringify({ p1: 0, p2: 0 }));
+            }
+            
+            if (!localStorage.getItem('reflexScores')) {
+                localStorage.setItem('reflexScores', JSON.stringify({ p1: 0, p2: 0 }));
+            }
+        }
+    </script>
+</body>
+</html>
